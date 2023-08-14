@@ -1,0 +1,9 @@
+node_modules
+
+# builds
+dist
+
+# no need to lint and type-check configs
+tsup.config.ts
+jest.config.js
+.eslintrc.js
