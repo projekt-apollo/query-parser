@@ -1,24 +1,25 @@
 import {type Token} from '../src/tokenizer'
 import {Parser, type QueryOperator} from '../src/parser'
 
+function parse(input: Token[]) {
+  const parser = new Parser()
+  parser.init(input)
+  parser.parse()
+  return parser.getAst()
+}
+
 test('parse empty input', () => {
   const input: Token[] = []
   const result: QueryOperator[] = []
 
-  const parser = new Parser()
-  parser.init(input)
-
-  expect(parser.parse()).toEqual(result)
+  expect(parse(input)).toEqual(result)
 })
 
-test('parse keyword term', () => {
+test('parse string', () => {
   const input: Token[] = [{type: 'String', value: 'tea'}]
   const result: QueryOperator[] = [{type: 'KeywordTerm', value: 'tea'}]
 
-  const parser = new Parser()
-  parser.init(input)
-
-  expect(parser.parse()).toEqual(result)
+  expect(parse(input)).toEqual(result)
 })
 
 test('parse colon filter', () => {
@@ -27,10 +28,7 @@ test('parse colon filter', () => {
     {type: 'ColonFilter', filter: 'tag', value: 'japan'},
   ]
 
-  const parser = new Parser()
-  parser.init(input)
-
-  expect(parser.parse()).toEqual(result)
+  expect(parse(input)).toEqual(result)
 })
 
 test('parse empty colon filter', () => {
@@ -39,10 +37,7 @@ test('parse empty colon filter', () => {
     {type: 'ColonFilter', filter: 'tag', value: ''},
   ]
 
-  const parser = new Parser()
-  parser.init(input)
-
-  expect(parser.parse()).toEqual(result)
+  expect(parse(input)).toEqual(result)
 })
 
 test('parse colon filter with colon value', () => {
@@ -51,23 +46,17 @@ test('parse colon filter with colon value', () => {
     {type: 'ColonFilter', filter: 'tag', value: ':japan'},
   ]
 
-  const parser = new Parser()
-  parser.init(input)
-
-  expect(parser.parse()).toEqual(result)
+  expect(parse(input)).toEqual(result)
 })
 
 test('parse comma delimeter', () => {
   const input: Token[] = [{type: 'CommaDelimeter', value: ','}]
   const result: QueryOperator[] = [{type: 'CommaDelimeter', value: ','}]
 
-  const parser = new Parser()
-  parser.init(input)
-
-  expect(parser.parse()).toEqual(result)
+  expect(parse(input)).toEqual(result)
 })
 
-test('parse sequence of keyword terms', () => {
+test('parse sequence of strings', () => {
   const input: Token[] = [
     {type: 'String', value: 'tea'},
     {type: 'String', value: 'maccha'},
@@ -77,13 +66,10 @@ test('parse sequence of keyword terms', () => {
     {type: 'KeywordTerm', value: 'maccha'},
   ]
 
-  const parser = new Parser()
-  parser.init(input)
-
-  expect(parser.parse()).toEqual(result)
+  expect(parse(input)).toEqual(result)
 })
 
-test('parse sequence of colon filter and keyword term', () => {
+test('parse sequence of colon filter and string', () => {
   const input: Token[] = [
     {type: 'ColonFilter', value: 'tag:japan'},
     {type: 'String', value: 'tea'},
@@ -93,13 +79,10 @@ test('parse sequence of colon filter and keyword term', () => {
     {type: 'KeywordTerm', value: 'tea'},
   ]
 
-  const parser = new Parser()
-  parser.init(input)
-
-  expect(parser.parse()).toEqual(result)
+  expect(parse(input)).toEqual(result)
 })
 
-test('parse sequence of colon filter, keyword term, comma delimeter, and keyword term', () => {
+test('parse sequence of colon filter, string, comma delimeter, and string', () => {
   const input: Token[] = [
     {type: 'ColonFilter', value: 'tag:japan'},
     {type: 'String', value: 'tea'},
@@ -113,8 +96,5 @@ test('parse sequence of colon filter, keyword term, comma delimeter, and keyword
     {type: 'KeywordTerm', value: 'maccha'},
   ]
 
-  const parser = new Parser()
-  parser.init(input)
-
-  expect(parser.parse()).toEqual(result)
+  expect(parse(input)).toEqual(result)
 })
