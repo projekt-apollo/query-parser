@@ -21,16 +21,22 @@ export type QueryOperator = ColonFilter | KeywordTerm | CommaDelimeter
 export class Parser {
   private tokens: Token[] = []
   private token: Token | null = null
+  private ast: QueryOperator[] = []
 
   public init(tokens: Token[]) {
     this.tokens = tokens
+    this.ast = []
 
     // prime initial token
     this.pop()
   }
 
+  public getAst() {
+    return this.ast
+  }
+
   public parse() {
-    return this.QueryOperatorList()
+    this.ast = this.QueryOperatorList()
   }
 
   /**

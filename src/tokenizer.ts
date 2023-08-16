@@ -23,15 +23,19 @@ const res: Re[] = [
 export class Tokenizer {
   private input: string = ''
   private cursor: number = 0
+  private tokens: Token[] = []
 
   public init(input: string) {
     this.input = input
     this.cursor = 0
+    this.tokens = []
+  }
+
+  public getTokens() {
+    return this.tokens
   }
 
   public tokenize() {
-    const tokens: Token[] = []
-
     // "foo".length = 3
     //  012
     while (this.cursor < this.input.length) {
@@ -53,7 +57,7 @@ export class Tokenizer {
         this.cursor += match[0].length
 
         if (tokenType) {
-          tokens.push({
+          this.tokens.push({
             type: tokenType,
             value: match[0],
           })
@@ -69,7 +73,5 @@ export class Tokenizer {
         )
       }
     }
-
-    return tokens
   }
 }
