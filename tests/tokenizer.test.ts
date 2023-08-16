@@ -21,9 +21,9 @@ test('tokenize whitespace', () => {
   expect(tokenize(input)).toEqual(result)
 })
 
-test('tokenize comma delimeter', () => {
+test('tokenize comma delimiter', () => {
   const input = ','
-  const result: Token[] = [{type: 'CommaDelimeter', value: ','}]
+  const result: Token[] = [{type: 'CommaDelimiter', value: ','}]
 
   expect(tokenize(input)).toEqual(result)
 })
@@ -52,9 +52,9 @@ test('tokenize string surrounded by whitespace', () => {
 test('tokenize strings delimeted by colon', () => {
   const input = ',tea, maccha'
   const result: Token[] = [
-    {type: 'CommaDelimeter', value: ','},
+    {type: 'CommaDelimiter', value: ','},
     {type: 'String', value: 'tea'},
-    {type: 'CommaDelimeter', value: ','},
+    {type: 'CommaDelimiter', value: ','},
     {type: 'String', value: 'maccha'},
   ]
 
@@ -85,22 +85,22 @@ test('tokenize colon filter surrounded by whitespace', () => {
 test('tokenize colon filters delimeted by colon', () => {
   const input = ',tag:japan tag:drinks,'
   const result: Token[] = [
-    {type: 'CommaDelimeter', value: ','},
+    {type: 'CommaDelimiter', value: ','},
     {type: 'ColonFilter', value: 'tag:japan'},
     {type: 'ColonFilter', value: 'tag:drinks'},
-    {type: 'CommaDelimeter', value: ','},
+    {type: 'CommaDelimiter', value: ','},
   ]
 
   expect(tokenize(input)).toEqual(result)
 })
 
-test('tokenize sequence of colon filters, string, comma delimeter, followed by string', () => {
+test('tokenize sequence of colon filters, string, comma delimiter, followed by string', () => {
   const input = 'tag:japan tag:drinks tea, maccha'
   const result: Token[] = [
     {type: 'ColonFilter', value: 'tag:japan'},
     {type: 'ColonFilter', value: 'tag:drinks'},
     {type: 'String', value: 'tea'},
-    {type: 'CommaDelimeter', value: ','},
+    {type: 'CommaDelimiter', value: ','},
     {type: 'String', value: 'maccha'},
   ]
 

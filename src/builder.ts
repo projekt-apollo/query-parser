@@ -24,7 +24,7 @@ export class Builder {
 
     for (const node of this.ast) {
       switch (node.type) {
-        case 'CommaDelimeter':
+        case 'CommaDelimiter':
           separateNextKeyword = true
           break
         case 'ColonFilter':

@@ -7,7 +7,7 @@ test('generate ast and query from input', () => {
   const ast: Ast = [
     {type: 'ColonFilter', filter: 'tag', value: 'japan'},
     {type: 'KeywordTerm', value: 'tea'},
-    {type: 'CommaDelimeter', value: ','},
+    {type: 'CommaDelimiter', value: ','},
     {type: 'KeywordTerm', value: 'maccha'},
   ]
   const query: Query = [

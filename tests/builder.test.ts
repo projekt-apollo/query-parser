@@ -49,7 +49,7 @@ test('build multiple keyword terms', () => {
 test('builder keyword terms delimeted by comma', () => {
   const input: Ast = [
     {type: 'KeywordTerm', value: 'tea'},
-    {type: 'CommaDelimeter', value: ','},
+    {type: 'CommaDelimiter', value: ','},
     {type: 'KeywordTerm', value: 'maccha'},
   ]
   const result: Query = [
@@ -77,7 +77,7 @@ test('builder keyword terms delimeted by colon filter', () => {
 
 test('builder keyword terms delimeted by commas and colon filter', () => {
   const input: Ast = [
-    {type: 'CommaDelimeter', value: ','},
+    {type: 'CommaDelimiter', value: ','},
     {type: 'KeywordTerm', value: 'green'},
     {type: 'KeywordTerm', value: 'tea'},
     {type: 'ColonFilter', filter: 'tag', value: 'japan'},

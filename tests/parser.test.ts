@@ -43,9 +43,9 @@ test('parse colon filter with colon value', () => {
   expect(parse(input)).toEqual(result)
 })
 
-test('parse comma delimeter', () => {
-  const input: Tokens = [{type: 'CommaDelimeter', value: ','}]
-  const result: Ast = [{type: 'CommaDelimeter', value: ','}]
+test('parse comma delimiter', () => {
+  const input: Tokens = [{type: 'CommaDelimiter', value: ','}]
+  const result: Ast = [{type: 'CommaDelimiter', value: ','}]
 
   expect(parse(input)).toEqual(result)
 })
@@ -76,17 +76,17 @@ test('parse sequence of colon filter and string', () => {
   expect(parse(input)).toEqual(result)
 })
 
-test('parse sequence of colon filter, string, comma delimeter, and string', () => {
+test('parse sequence of colon filter, string, comma delimiter, and string', () => {
   const input: Tokens = [
     {type: 'ColonFilter', value: 'tag:japan'},
     {type: 'String', value: 'tea'},
-    {type: 'CommaDelimeter', value: ','},
+    {type: 'CommaDelimiter', value: ','},
     {type: 'String', value: 'maccha'},
   ]
   const result: Ast = [
     {type: 'ColonFilter', filter: 'tag', value: 'japan'},
     {type: 'KeywordTerm', value: 'tea'},
-    {type: 'CommaDelimeter', value: ','},
+    {type: 'CommaDelimiter', value: ','},
     {type: 'KeywordTerm', value: 'maccha'},
   ]
 

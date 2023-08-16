@@ -9,11 +9,11 @@ type KeywordTerm = {
   type: 'KeywordTerm'
   value: string
 }
-type CommaDelimeter = {
-  type: 'CommaDelimeter'
+type CommaDelimiter = {
+  type: 'CommaDelimiter'
   value: string
 }
-type QueryOperator = ColonFilter | KeywordTerm | CommaDelimeter
+type QueryOperator = ColonFilter | KeywordTerm | CommaDelimiter
 export type Ast = QueryOperator[]
 
 export class Parser {
@@ -59,9 +59,9 @@ export class Parser {
    * QueryOperator
    *  : KeywordTerm
    *  | ColonFilter
-   *  | CommaDelimeter
+   *  | CommaDelimiter
    */
-  private QueryOperator(): KeywordTerm | ColonFilter | CommaDelimeter | null {
+  private QueryOperator(): KeywordTerm | ColonFilter | CommaDelimiter | null {
     if (!this.token) {
       return null
     }
@@ -71,8 +71,8 @@ export class Parser {
         return this.KeywordTerm()
       case 'ColonFilter':
         return this.ColonFilter()
-      case 'CommaDelimeter':
-        return this.CommaDelimeter()
+      case 'CommaDelimiter':
+        return this.CommaDelimiter()
       default:
         throw new Error('Cannot reach this part of code')
     }
@@ -120,10 +120,10 @@ export class Parser {
   }
 
   /**
-   * CommaDelimeter
+   * CommaDelimiter
    *  : ','
    */
-  private CommaDelimeter(): CommaDelimeter | null {
+  private CommaDelimiter(): CommaDelimiter | null {
     if (!this.token) {
       return null
     }
@@ -132,7 +132,7 @@ export class Parser {
     this.pop()
 
     return {
-      type: 'CommaDelimeter',
+      type: 'CommaDelimiter',
       value,
     }
   }
