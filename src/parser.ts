@@ -1,5 +1,3 @@
-import {pop} from './helpers'
-
 export type Token = {
   type: 'String' | 'ColonFilter' | 'CommaDelimeter'
   value: string
@@ -34,7 +32,9 @@ export class Parser {
 
   public init(tokens: Token[]) {
     this.tokens = tokens
-    this.token = pop(tokens)
+
+    // prime initial token
+    this.pop()
   }
 
   public parse() {
@@ -69,6 +69,7 @@ export class Parser {
     if (!this.token) {
       return null
     }
+
     switch (this.token.type) {
       case 'String':
         return this.KeywordTerm()
@@ -76,7 +77,6 @@ export class Parser {
         return this.ColonFilter()
       case 'CommaDelimeter':
         return this.CommaDelimeter()
-        break
       default:
         throw new Error('Cannot reach this part of code')
     }
@@ -90,8 +90,10 @@ export class Parser {
     if (!this.token) {
       return null
     }
+
     const {value} = this.token
-    this.token = pop(this.tokens)
+    this.pop()
+
     return {
       type: 'KeywordTerm',
       value,
@@ -107,8 +109,9 @@ export class Parser {
     if (!this.token) {
       return null
     }
+
     const {value: string} = this.token
-    this.token = pop(this.tokens)
+    this.pop()
 
     const [, filter] = string.match(/([^\s^:]+):/) ?? []
     const [, value] = string.match(/:([^\s]*)/) ?? []
@@ -128,12 +131,17 @@ export class Parser {
     if (!this.token) {
       return null
     }
+
     const {value} = this.token
-    this.token = pop(this.tokens)
+    this.pop()
 
     return {
       type: 'CommaDelimeter',
       value,
     }
+  }
+
+  private pop() {
+    this.token = this.tokens.shift() ?? null
   }
 }
