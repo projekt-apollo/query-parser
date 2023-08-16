@@ -22,13 +22,8 @@ type CommaDelimeter = {
 export type QueryOperator = ColonFilter | KeywordTerm | CommaDelimeter
 
 export class Parser {
-  private tokens: Token[]
-  private token: Token | null
-
-  public constructor() {
-    this.tokens = []
-    this.token = null
-  }
+  private tokens: Token[] = []
+  private token: Token | null = null
 
   public init(tokens: Token[]) {
     this.tokens = tokens
