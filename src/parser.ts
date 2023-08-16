@@ -1,7 +1,4 @@
-export type Token = {
-  type: 'String' | 'ColonFilter' | 'CommaDelimeter'
-  value: string
-}
+import {type Token} from './tokenizer'
 
 type ColonFilter = {
   type: 'ColonFilter'

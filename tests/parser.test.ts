@@ -1,4 +1,5 @@
-import {Parser, type Token, type QueryOperator} from '../src/parser'
+import {type Token} from '../src/tokenizer'
+import {Parser, type QueryOperator} from '../src/parser'
 
 test('parse empty input', () => {
   const input: Token[] = []
