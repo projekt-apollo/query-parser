@@ -1,15 +1,16 @@
-import {type QueryOperator} from './parser'
+import {type Ast} from './parser'
 
-export type QueryFilter = {
+type QueryFilter = {
   filter: 'keyword' | string
   value: string
 }
+export type Query = QueryFilter[]
 
 export class Builder {
-  private ast: QueryOperator[] = []
-  private query: QueryFilter[] = []
+  private ast: Ast = []
+  private query: Query = []
 
-  public init(ast: QueryOperator[]) {
+  public init(ast: Ast) {
     this.ast = ast
     this.query = []
   }

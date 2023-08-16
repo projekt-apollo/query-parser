@@ -1,29 +1,27 @@
-import {type Token} from './tokenizer'
+import {type Token, type Tokens} from './tokenizer'
 
 type ColonFilter = {
   type: 'ColonFilter'
   filter: string
   value: string
 }
-
 type KeywordTerm = {
   type: 'KeywordTerm'
   value: string
 }
-
 type CommaDelimeter = {
   type: 'CommaDelimeter'
   value: string
 }
-
-export type QueryOperator = ColonFilter | KeywordTerm | CommaDelimeter
+type QueryOperator = ColonFilter | KeywordTerm | CommaDelimeter
+export type Ast = QueryOperator[]
 
 export class Parser {
-  private tokens: Token[] = []
+  private tokens: Tokens = []
   private token: Token | null = null
-  private ast: QueryOperator[] = []
+  private ast: Ast = []
 
-  public init(tokens: Token[]) {
+  public init(tokens: Tokens) {
     this.tokens = tokens
     this.ast = []
 

@@ -1,9 +1,9 @@
 type TokenType = 'String' | 'ColonFilter' | 'CommaDelimeter'
-
 export type Token = {
   type: TokenType
   value: string
 }
+export type Tokens = Token[]
 
 type Re = [RegExp, TokenType | null]
 const res: Re[] = [
@@ -23,7 +23,7 @@ const res: Re[] = [
 export class Tokenizer {
   private input: string = ''
   private cursor: number = 0
-  private tokens: Token[] = []
+  private tokens: Tokens = []
 
   public init(input: string) {
     this.input = input
