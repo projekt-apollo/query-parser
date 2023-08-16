@@ -7,7 +7,7 @@
   "scripts": {
     "test": "jest",
     "build": "tsup",
-    "lint": "eslint . --report-unused-disable-directives"
+    "lint": "tsc && eslint . --report-unused-disable-directives"
   },
   "license": "MIT",
   "devDependencies": {
