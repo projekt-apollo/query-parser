@@ -7,7 +7,7 @@ systems.
 ## Installation
 
 ```bash
-npm install <package-name>
+npm install @projekt-apollo/query-parser
 ```
 
 ## Usage
@@ -15,7 +15,7 @@ npm install <package-name>
 ### Object-Oriented Usage (OOP)
 
 ```ts
-import {SearchQuery} from 'query-parser'
+import {SearchQuery} from '@projekt-apollo/query-parser'
 
 const sq = new SearchQuery('tag:japan tea, maccha')
 const ast = sq.getAst()
@@ -38,7 +38,7 @@ const query = sq.getQuery()
 ### Functional Usage
 
 ```ts
-import {getAst, getQuery} from 'query-parser'
+import {getAst, getQuery} from '@projekt-apollo/query-parser'
 
 const ast = getAst('tag:japan tea, maccha')
 /* => [
@@ -61,7 +61,7 @@ const query = getQuery('tag:japan tea, maccha')
 - **Exact Match**: Add support for exact match keywords with double quotation
   marks similar to Google Search.
 - **Space Delimited Filter Value**: Currently, a colon filter only supports non
-  whitespace delimeted strings. Support these values with double quotation
+  whitespace delimited strings. Support these values with double quotation
   marks.
 
 ## Contributing
@@ -69,7 +69,7 @@ const query = getQuery('tag:japan tea, maccha')
 The project is not currently open to pull requests. But for bugs and
 suggestions, please feel free to open an issue.
 
-## Inspiration
+## Acknowledgment
 
 Thank you to the authors of the following libraries for inspiration.
 
