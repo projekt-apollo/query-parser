@@ -18,8 +18,8 @@ npm install @projekt-apollo/query-parser
 import {SearchQuery} from '@projekt-apollo/query-parser'
 
 const sq = new SearchQuery('tag:japan tea, maccha')
-const ast = sq.getAst()
 
+const ast = sq.getAst()
 /* => [
   {type: 'ColonFilter', filter: 'tag', value: 'japan'},
   {type: 'KeywordTerm', value: 'tea'},

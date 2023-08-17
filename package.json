@@ -2,10 +2,18 @@
   "name": "@projekt-apollo/query-parser",
   "version": "0.1.0",
   "description": "A lightweight TypeScript library for parsing simple search syntax into a structured AST and query object",
+  "author": "Shu Takahashi",
+  "license": "MIT",
+  "repository": "github:projekt-apollo/query-parser",
+  "homepage": "https://github.com/projekt-apollo/query-parser#readme",
+  "bugs": "https://github.com/projekt-apollo/query-parser/issues",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "jest",
     "build": "tsup",
@@ -21,10 +29,5 @@
     "ts-jest": "^29.1.1",
     "tsup": "^7.2.0",
     "typescript": "^5.1.6"
-  },
-  "files": [
-    "dist"
-  ],
-  "author": "Shu Takahashi",
-  "license": "MIT"
+  }
 }
