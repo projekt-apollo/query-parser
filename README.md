@@ -55,7 +55,7 @@ const query = build(tokens)
 Combines the `tokenize` and `build` functions. Accepts a string and returns a
 `Query` array.
 
-### Syntax
+## Syntax
 
 The `Query` object is an array of `QueryFilter` objects. Each `QueryFilter`
 represents a filter constraint for a particular query on some property. For
@@ -77,6 +77,18 @@ with the filter value set to `keyword`:
 
 ```
 javascript => {filter: 'keyword', value: 'javascript'}
+```
+
+If a comma is present between two keywords, it will be parsed as two separate
+keyword filters. Otherwise two adjacent keywords are parsed as one keyword
+filter:
+
+```
+javascript typescript => {filter: 'keyword', value: 'javascript typescript'}
+```
+
+```
+javascript, typescript => {filter: 'keyword', value: 'javascript'}, {filter: 'keyword', value: 'typescript'}
 ```
 
 Likewise, a query syntax that surrounds a string with single or double quotes is
