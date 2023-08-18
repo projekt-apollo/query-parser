@@ -29,6 +29,13 @@ test('build colon filter and lowercase filter', () => {
   expect(build(input)).toEqual(result)
 })
 
+test('build exact string', () => {
+  const input: Ast = [{type: 'ExactString', value: 'typescript'}]
+  const result: Query = [{filter: 'exact', value: 'typescript'}]
+
+  expect(build(input)).toEqual(result)
+})
+
 test('build keyword term', () => {
   const input: Ast = [{type: 'KeywordTerm', value: 'tea'}]
   const result: Query = [{filter: 'keyword', value: 'tea'}]

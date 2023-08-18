@@ -1,5 +1,14 @@
 import {type Token, type Tokens} from './tokenizer'
 
+export type RegExpGroups<T extends string, U extends string = string> =
+  | (RegExpMatchArray & {
+      groups?:
+        | {[name in T]: string}
+        | {[name in U]?: string}
+        | {[key: string]: string}
+    })
+  | null
+
 type ColonFilter = {
   type: 'ColonFilter'
   filter: string
@@ -9,11 +18,15 @@ type KeywordTerm = {
   type: 'KeywordTerm'
   value: string
 }
+type ExactString = {
+  type: 'ExactString'
+  value: string
+}
 type CommaDelimiter = {
   type: 'CommaDelimiter'
   value: string
 }
-type QueryOperator = ColonFilter | KeywordTerm | CommaDelimiter
+type QueryOperator = ColonFilter | KeywordTerm | CommaDelimiter | ExactString
 export type Ast = QueryOperator[]
 
 export class Parser {
@@ -61,7 +74,7 @@ export class Parser {
    *  | ColonFilter
    *  | CommaDelimiter
    */
-  private QueryOperator(): KeywordTerm | ColonFilter | CommaDelimiter | null {
+  private QueryOperator(): QueryOperator | null {
     if (!this.token) {
       return null
     }
@@ -73,6 +86,8 @@ export class Parser {
         return this.ColonFilter()
       case 'CommaDelimiter':
         return this.CommaDelimiter()
+      case 'ExactString':
+        return this.ExactString()
       default:
         throw new Error('Cannot reach this part of code')
     }
@@ -97,9 +112,34 @@ export class Parser {
   }
 
   /**
+   * ExactString
+   *  : '"' STRING '"'
+   */
+  private ExactString(): ExactString | null {
+    if (!this.token) {
+      return null
+    }
+
+    const {value: exactString} = this.token
+    const match: RegExpGroups<'string' | 'quote'> = exactString.match(
+      /^(?<quote>['"])(?<string>.*?)\k<quote>/,
+    )
+
+    if (!match?.groups) {
+      throw new Error('Cannot reach this part of code')
+    }
+
+    const string = match.groups.string
+    this.pop()
+
+    return {type: 'ExactString', value: string}
+  }
+
+  /**
    * ColonFilter
    *  : STRING ':' STRING
-   *  : STRING ':'
+   *  | STRING ':'
+   *  | STRING ':"' STRING '"'
    */
   private ColonFilter(): ColonFilter | null {
     if (!this.token) {
@@ -109,8 +149,20 @@ export class Parser {
     const {value: string} = this.token
     this.pop()
 
-    const [, filter] = string.match(/([^\s^:]+):/) ?? []
-    const [, value] = string.match(/:([^\s]*)/) ?? []
+    const match: RegExpGroups<
+      'filter' | 'quote',
+      'quoteValue' | 'stringValue'
+    > = string.match(
+      /^(?<filter>[^\s^:]+):(((?<quote>['"])(?<quoteValue>.*?)\k<quote>)|(?<stringValue>[^\s^,]*))/,
+    )
+
+    if (!match?.groups) {
+      throw new Error('Cannot reach this part of code')
+    }
+
+    const {filter, quoteValue, stringValue} = match.groups
+
+    const value = quoteValue ?? stringValue ?? ''
 
     return {
       type: 'ColonFilter',

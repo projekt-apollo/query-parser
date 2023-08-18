@@ -1,4 +1,4 @@
-type TokenType = 'String' | 'ColonFilter' | 'CommaDelimiter'
+type TokenType = 'String' | 'ExactString' | 'ColonFilter' | 'CommaDelimiter'
 export type Token = {
   type: TokenType
   value: string
@@ -14,7 +14,10 @@ const res: Re[] = [
   [/^,/, 'CommaDelimiter'],
 
   // ColonFilter
-  [/^[^\s^:]+:[^\s^,]*/, 'ColonFilter'],
+  [/^[^\s^:]+:((?<quote>['"])(.*?)\k<quote>|[^\s^,]*)/, 'ColonFilter'],
+
+  // ExactString
+  [/^(?<quote>['"])(.*?)\k<quote>/, 'ExactString'],
 
   // String
   [/^[^\s^,]+/, 'String'],

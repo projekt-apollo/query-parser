@@ -35,6 +35,13 @@ export class Builder {
           })
           separateNextKeyword = true
           break
+        case 'ExactString':
+          this.query.push({
+            filter: 'exact',
+            value: node.value,
+          })
+          separateNextKeyword = true
+          break
         case 'KeywordTerm':
           if (separateNextKeyword) {
             this.query.push({

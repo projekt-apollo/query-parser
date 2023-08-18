@@ -22,6 +22,13 @@ test('parse string', () => {
   expect(parse(input)).toEqual(result)
 })
 
+test('parse exact string', () => {
+  const input: Tokens = [{type: 'ExactString', value: `"typescript"`}]
+  const result: Ast = [{type: 'ExactString', value: 'typescript'}]
+
+  expect(parse(input)).toEqual(result)
+})
+
 test('parse colon filter', () => {
   const input: Tokens = [{type: 'ColonFilter', value: 'tag:japan'}]
   const result: Ast = [{type: 'ColonFilter', filter: 'tag', value: 'japan'}]
@@ -32,6 +39,13 @@ test('parse colon filter', () => {
 test('parse empty colon filter', () => {
   const input: Tokens = [{type: 'ColonFilter', value: 'tag:'}]
   const result: Ast = [{type: 'ColonFilter', filter: 'tag', value: ''}]
+
+  expect(parse(input)).toEqual(result)
+})
+
+test('parse empty colon filter with whitespace delimited value', () => {
+  const input: Tokens = [{type: 'ColonFilter', value: `tag:"ux design"`}]
+  const result: Ast = [{type: 'ColonFilter', filter: 'tag', value: `ux design`}]
 
   expect(parse(input)).toEqual(result)
 })
