@@ -76,7 +76,7 @@ const res: Re[] = [
 
 export function tokenize(input: string) {
   let cursor = 0
-  const tokens: Token[] = []
+  const tokens: Tokens = []
 
   // "foo".length = 3
   //  012

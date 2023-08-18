@@ -12,61 +12,89 @@ npm install @projekt-apollo/query-parser
 
 ## Usage
 
-### Object-Oriented Usage (OOP)
-
 ```ts
-import {SearchQuery} from '@projekt-apollo/query-parser'
+import {parse} from '@projekt-apollo/query-parser'
 
-const sq = new SearchQuery('tag:japan tea, maccha')
-
-const ast = sq.getAst()
+const query = parse(`tag:language "typescript" regex, class`)
 /* => [
-  {type: 'ColonFilter', filter: 'tag', value: 'japan'},
-  {type: 'KeywordTerm', value: 'tea'},
-  {type: 'CommaDelimiter', value: ','},
-  {type: 'KeywordTerm', value: 'maccha'},
-] */
-
-const query = sq.getQuery()
-/* => [
-  {filter: 'tag', value: 'japan'},
-  {filter: 'keyword', value: 'tea'},
-  {filter: 'keyword', value: 'maccha'},
+  {filter: 'tag', value: 'language'},
+  {filter: 'exact', value: 'typescript'},
+  {filter: 'keyword', value: 'regex'},
+  {filter: 'keyword', value: 'class'},
 ] */
 ```
 
-### Functional Usage
+### `tokenize(input: string): Tokens`
 
 ```ts
-import {getAst, getQuery} from '@projekt-apollo/query-parser'
-
-const ast = getAst('tag:japan tea, maccha')
+const tokens = tokenize(`tag:language "typescript" regex, class`)
 /* => [
-  {type: 'ColonFilter', filter: 'tag', value: 'japan'},
-  {type: 'KeywordTerm', value: 'tea'},
-  {type: 'CommaDelimiter', value: ','},
-  {type: 'KeywordTerm', value: 'maccha'},
-] */
-
-const query = getQuery('tag:japan tea, maccha')
-/* => [
-  {filter: 'tag', value: 'japan'},
-  {filter: 'keyword', value: 'tea'},
-  {filter: 'keyword', value: 'maccha'},
+  { type: 'ColonFilter', filter: 'tag', value: 'language' },
+  { type: 'ExactTerm', value: 'typescript' },
+  { type: 'KeywordTerm', value: 'regex' },
+  { type: 'CommaDelimiter', value: ',' },
+  { type: 'KeywordTerm', value: 'class' },
+];
 ] */
 ```
 
-## Roadmap
+### `build(tokens: Tokens): Query`
 
-- **Exact Match**: Add support for exact match keywords with double quotation
-  marks similar to Google Search.
-- **Space Delimited Filter Value**: Currently, a colon filter only supports non
-  whitespace delimited strings. Support these values with double quotation
-  marks.
+```ts
+const query = build(tokens)
+/* => [
+  {filter: 'tag', value: 'language'},
+  {filter: 'exact', value: 'typescript'},
+  {filter: 'keyword', value: 'regex'},
+  {filter: 'keyword', value: 'class'},
+] */
+```
+
+### `parse(input: string): Query`
+
+Combines the `tokenize` and `build` functions. Accepts a string and returns a
+`Query` array.
+
+### Syntax
+
+The `Query` object is an array of `QueryFilter` objects. Each `QueryFilter`
+represents a filter constraint for a particular query on some property. For
+example this is a `QueryFilter` that filters on a property of `language` with
+the value `typescript`:
+
+```
+{filter: 'language', value: 'typescript'}
+```
+
+The `QueryFilter` above is represented using the following syntax:
+
+```
+language:typescript
+```
+
+A query syntax without the colon operator is a shorthand for a `QueryFilter`
+with the filter value set to `keyword`:
+
+```
+javascript => {filter: 'keyword', value: 'javascript'}
+```
+
+Likewise, a query syntax that surrounds a string with single or double quotes is
+a shorthand for a `QueryFilter` with the filter value set to `exact`:
+
+```
+"regex" => {filter: 'exact', value: 'regex'}
+```
+
+This quote syntax can also be used for a filter value containing whitespace(s):
+
+```
+tag:"ux design" => {filter: 'tag', value: 'ux design'}
+```
 
 ## Contributing
 
-The project is not currently open to pull requests. But for bugs and
+This project is not currently open to pull requests. But for bugs and
 suggestions, please feel free to open an issue.
 
 ## Acknowledgment
