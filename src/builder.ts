@@ -1,7 +1,7 @@
 import {type Ast} from './parser'
 
 type QueryFilter = {
-  filter: 'keyword' | string
+  filter: 'keyword' | 'exact' | string
   value: string
 }
 export type Query = QueryFilter[]

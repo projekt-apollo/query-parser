@@ -3,17 +3,19 @@ import {type Query} from '../src/builder'
 import {SearchQuery} from '../src/search-query'
 
 test('generate ast and query from input', () => {
-  const input = 'tag:japan tea, maccha'
+  const input = `tag:japan tea, maccha "green"`
   const ast: Ast = [
     {type: 'ColonFilter', filter: 'tag', value: 'japan'},
     {type: 'KeywordTerm', value: 'tea'},
     {type: 'CommaDelimiter', value: ','},
     {type: 'KeywordTerm', value: 'maccha'},
+    {type: 'ExactString', value: 'green'},
   ]
   const query: Query = [
     {filter: 'tag', value: 'japan'},
     {filter: 'keyword', value: 'tea'},
     {filter: 'keyword', value: 'maccha'},
+    {filter: 'exact', value: 'green'},
   ]
 
   const sq = new SearchQuery()

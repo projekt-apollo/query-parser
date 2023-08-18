@@ -6,6 +6,8 @@ export type Token = {
 export type Tokens = Token[]
 
 type Re = [RegExp, TokenType | null]
+
+// the order matters!
 const res: Re[] = [
   // Whitespace(s)
   [/^\s+/, null],
@@ -13,14 +15,17 @@ const res: Re[] = [
   // CommaDelimiter
   [/^,/, 'CommaDelimiter'],
 
-  // ColonFilter
-  [/^[^\s^:]+:((?<quote>['"])(.*?)\k<quote>|[^\s^,]*)/, 'ColonFilter'],
-
   // ExactString
   [/^(?<quote>['"])(.*?)\k<quote>/, 'ExactString'],
 
+  // ColonFilter
+  [/^[^\s^:]+:((?<quote>['"])(.*?)\k<quote>|[^\s^,]*)/, 'ColonFilter'],
+
   // String
-  [/^[^\s^,]+/, 'String'],
+  [/^[^\s^,^"^']+/, 'String'],
+
+  // Unmatched Quotes
+  [/^["']/, null],
 ]
 
 export class Tokenizer {

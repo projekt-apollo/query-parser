@@ -49,9 +49,16 @@ test('tokenize string surrounded by whitespace', () => {
   expect(tokenize(input)).toEqual(result)
 })
 
-test('tokenize unmatching exact string as string', () => {
+test('ignore single quote', () => {
+  const input = `"javascript`
+  const result: Token[] = [{type: 'String', value: `javascript`}]
+
+  expect(tokenize(input)).toEqual(result)
+})
+
+test('ignore unmatching quote', () => {
   const input = `"typescript'`
-  const result: Token[] = [{type: 'String', value: `"typescript'`}]
+  const result: Token[] = [{type: 'String', value: `typescript`}]
 
   expect(tokenize(input)).toEqual(result)
 })
@@ -59,6 +66,33 @@ test('tokenize unmatching exact string as string', () => {
 test('tokenize exact string', () => {
   const input = `"typescript"`
   const result: Token[] = [{type: 'ExactString', value: `"typescript"`}]
+
+  expect(tokenize(input)).toEqual(result)
+})
+
+test('tokenize exact string followed by string', () => {
+  const input = `"typescript"language`
+  const result: Token[] = [
+    {type: 'ExactString', value: `"typescript"`},
+    {type: 'String', value: 'language'},
+  ]
+
+  expect(tokenize(input)).toEqual(result)
+})
+
+test('tokenize exact string following string', () => {
+  const input = `language"typescript"`
+  const result: Token[] = [
+    {type: 'String', value: 'language'},
+    {type: 'ExactString', value: `"typescript"`},
+  ]
+
+  expect(tokenize(input)).toEqual(result)
+})
+
+test('tokenize exact string containing single quote', () => {
+  const input = `"single'quote"`
+  const result: Token[] = [{type: 'ExactString', value: `"single'quote"`}]
 
   expect(tokenize(input)).toEqual(result)
 })
