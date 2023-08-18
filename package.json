@@ -1,6 +1,6 @@
 {
   "name": "@projekt-apollo/query-parser",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A lightweight TypeScript library for parsing simple search syntax into a structured AST and query object",
   "author": "Shu Takahashi",
   "license": "MIT",
