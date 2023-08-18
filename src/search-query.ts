@@ -18,7 +18,7 @@ export class SearchQuery {
     this.ast = null
     this.query = null
 
-    if (input) {
+    if (typeof input === 'string') {
       this.parse(input)
     }
   }
