@@ -1,29 +1,29 @@
-import {type Token} from '../src/tokenize'
+import {type Tokens} from '../src/tokenize'
 import {build, type Query} from '../src/build'
 
 test('build empty tokens', () => {
-  const input: Token[] = []
+  const input: Tokens = []
   const result: Query = []
 
   expect(build(input)).toEqual(result)
 })
 
 test('ignore comma delimiter', () => {
-  const input: Token[] = [{type: 'CommaDelimiter', value: `,`}]
+  const input: Tokens = [{type: 'CommaDelimiter', value: `,`}]
   const result: Query = []
 
   expect(build(input)).toEqual(result)
 })
 
 test('build exact term', () => {
-  const input: Token[] = [{type: 'ExactTerm', value: `regex`}]
+  const input: Tokens = [{type: 'ExactTerm', value: `regex`}]
   const result: Query = [{filter: `exact`, value: `regex`}]
 
   expect(build(input)).toEqual(result)
 })
 
 test('build colon filter', () => {
-  const input: Token[] = [
+  const input: Tokens = [
     {type: 'ColonFilter', filter: `tag`, value: `typescript`},
   ]
   const result: Query = [{filter: `tag`, value: `typescript`}]
@@ -32,14 +32,14 @@ test('build colon filter', () => {
 })
 
 test('build keyword term', () => {
-  const input: Token[] = [{type: 'KeywordTerm', value: `tea`}]
+  const input: Tokens = [{type: 'KeywordTerm', value: `tea`}]
   const result: Query = [{filter: `keyword`, value: `tea`}]
 
   expect(build(input)).toEqual(result)
 })
 
 test('build multiple keyword terms', () => {
-  const input: Token[] = [
+  const input: Tokens = [
     {type: 'KeywordTerm', value: `tea`},
     {type: 'KeywordTerm', value: `maccha`},
   ]
@@ -49,7 +49,7 @@ test('build multiple keyword terms', () => {
 })
 
 test('build keyword terms delimited by comma delimiter', () => {
-  const input: Token[] = [
+  const input: Tokens = [
     {type: 'KeywordTerm', value: `tea`},
     {type: 'CommaDelimiter', value: `,`},
     {type: 'KeywordTerm', value: `maccha`},
@@ -63,7 +63,7 @@ test('build keyword terms delimited by comma delimiter', () => {
 })
 
 test('build sequence of keyword term, colon filter, keyword term, followed by exact term delimited by comma delimiters', () => {
-  const input: Token[] = [
+  const input: Tokens = [
     {type: 'KeywordTerm', value: `regex`},
     {type: 'ColonFilter', filter: `language`, value: `javascript`},
     {type: 'KeywordTerm', value: `class`},

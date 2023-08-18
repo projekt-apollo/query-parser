@@ -1,9 +1,10 @@
-import {type Token} from './tokenize'
+import {type Tokens} from './tokenize'
 
-type QueryFilter = {
+export type QueryFilter = {
   filter: 'keyword' | 'exact' | string
   value: string
 }
+
 export type Query = QueryFilter[]
 
 // warning: function has side effects
@@ -16,7 +17,7 @@ function appendToLastKeyword(query: Query, keyTerm: string) {
   }
 }
 
-export function build(tokens: Token[]) {
+export function build(tokens: Tokens) {
   const query: Query = []
   let separateNextKeyword = true
 

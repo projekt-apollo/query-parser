@@ -1,4 +1,31 @@
-import {captureMatch} from './helpers'
+type RegExpGroups<
+  TCapture extends string,
+  TMaybeCapture extends string = string,
+> =
+  | (RegExpMatchArray & {
+      groups?:
+        | {[name in TCapture]: string}
+        | {[name in TMaybeCapture]?: string}
+        | {[key: string]: string}
+    })
+  | null
+
+function captureMatch<
+  TCapture extends string,
+  TMaybeCapture extends string = string,
+>(re: RegExp, input: string) {
+  const match: RegExpGroups<TCapture, TMaybeCapture> = input.match(re)
+
+  if (!match) {
+    throw new Error(`${input} did not match ${re}`)
+  }
+
+  if (!match.groups) {
+    throw new Error(`${input} matched none of capture groups from ${re}`)
+  }
+
+  return match.groups
+}
 
 type CommaDelimiter = {
   type: 'CommaDelimiter'
@@ -22,9 +49,9 @@ type KeywordTerm = {
 }
 
 export type Token = CommaDelimiter | ExactTerm | ColonFilter | KeywordTerm
-type TokenType<TToken extends {type: string}> = TToken['type']
+export type Tokens = Token[]
 
-type Re = [RegExp, TokenType<Token> | null]
+type Re = [RegExp, Token['type'] | null]
 
 // the order matters!
 const res: Re[] = [
@@ -116,7 +143,7 @@ export function tokenize(input: string) {
           break
         }
         default: {
-          throw new Error()
+          throw new Error('Cannot reach this part of code')
         }
       }
 

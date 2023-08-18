@@ -1,78 +1,78 @@
-import {tokenize, type Token} from '../src/tokenize'
+import {tokenize, type Tokens} from '../src/tokenize'
 
 test('tokenize empty input', () => {
   const input = ``
-  const result: Token[] = []
+  const result: Tokens = []
 
   expect(tokenize(input)).toEqual(result)
 })
 
 test('ignore whitespace', () => {
   const input = ``
-  const result: Token[] = []
+  const result: Tokens = []
 
   expect(tokenize(input)).toEqual(result)
 })
 
 test('ignore unmatching quote', () => {
   const input = `'`
-  const result: Token[] = []
+  const result: Tokens = []
 
   expect(tokenize(input)).toEqual(result)
 })
 
 test('tokenize comma delimiter', () => {
   const input = `,`
-  const result: Token[] = [{type: 'CommaDelimiter', value: `,`}]
+  const result: Tokens = [{type: 'CommaDelimiter', value: `,`}]
 
   expect(tokenize(input)).toEqual(result)
 })
 
 test('tokenize keyword term', () => {
   const input = `tea`
-  const result: Token[] = [{type: 'KeywordTerm', value: `tea`}]
+  const result: Tokens = [{type: 'KeywordTerm', value: `tea`}]
 
   expect(tokenize(input)).toEqual(result)
 })
 
 test('tokenize keyword term surrounded by whitespace', () => {
   const input = `  tea  `
-  const result: Token[] = [{type: 'KeywordTerm', value: `tea`}]
+  const result: Tokens = [{type: 'KeywordTerm', value: `tea`}]
 
   expect(tokenize(input)).toEqual(result)
 })
 
 test('tokenize keyword term following colon', () => {
   const input = `:tea`
-  const result: Token[] = [{type: 'KeywordTerm', value: `:tea`}]
+  const result: Tokens = [{type: 'KeywordTerm', value: `:tea`}]
 
   expect(tokenize(input)).toEqual(result)
 })
 
 test('tokenize keyword term following unmatching quote', () => {
   const input = `"typescript`
-  const result: Token[] = [{type: 'KeywordTerm', value: `typescript`}]
+  const result: Tokens = [{type: 'KeywordTerm', value: `typescript`}]
 
   expect(tokenize(input)).toEqual(result)
 })
 
 test('tokenize keyword term surrounded by unmatching quotes', () => {
   const input = `"typescript'`
-  const result: Token[] = [{type: 'KeywordTerm', value: `typescript`}]
+  const result: Tokens = [{type: 'KeywordTerm', value: `typescript`}]
 
   expect(tokenize(input)).toEqual(result)
 })
 
 test('tokenize exact term', () => {
   const input = `"typescript"`
-  const result: Token[] = [{type: 'ExactTerm', value: `typescript`}]
+  const result: Tokens = [{type: 'ExactTerm', value: `typescript`}]
 
   expect(tokenize(input)).toEqual(result)
 })
 
 test('tokenize exact term followed by keyword term', () => {
   const input = `"typescript"language`
-  const result: Token[] = [
+  const result: Tokens = [
     {type: 'ExactTerm', value: `typescript`},
     {type: 'KeywordTerm', value: `language`},
   ]
@@ -82,7 +82,7 @@ test('tokenize exact term followed by keyword term', () => {
 
 test('tokenize exact term following keyword term', () => {
   const input = `language"typescript"`
-  const result: Token[] = [
+  const result: Tokens = [
     {type: 'KeywordTerm', value: `language`},
     {type: 'ExactTerm', value: `typescript`},
   ]
@@ -92,35 +92,35 @@ test('tokenize exact term following keyword term', () => {
 
 test('tokenize exact term containing single quote', () => {
   const input = `"single'quote"`
-  const result: Token[] = [{type: 'ExactTerm', value: `single'quote`}]
+  const result: Tokens = [{type: 'ExactTerm', value: `single'quote`}]
 
   expect(tokenize(input)).toEqual(result)
 })
 
 test('tokenize exact term containing space', () => {
   const input = `"hello world"`
-  const result: Token[] = [{type: 'ExactTerm', value: `hello world`}]
+  const result: Tokens = [{type: 'ExactTerm', value: `hello world`}]
 
   expect(tokenize(input)).toEqual(result)
 })
 
 test('tokenize exact term surrounded by whitespace', () => {
   const input = `  "typescript"  `
-  const result: Token[] = [{type: 'ExactTerm', value: `typescript`}]
+  const result: Tokens = [{type: 'ExactTerm', value: `typescript`}]
 
   expect(tokenize(input)).toEqual(result)
 })
 
 test('tokenize colon filter', () => {
   const input = `tag:japan`
-  const result: Token[] = [{type: 'ColonFilter', filter: `tag`, value: `japan`}]
+  const result: Tokens = [{type: 'ColonFilter', filter: `tag`, value: `japan`}]
 
   expect(tokenize(input)).toEqual(result)
 })
 
 test('tokenize colon filter with exact term value', () => {
   const input = `tag:"software development"`
-  const result: Token[] = [
+  const result: Tokens = [
     {type: 'ColonFilter', filter: `tag`, value: `software development`},
   ]
 
@@ -129,7 +129,7 @@ test('tokenize colon filter with exact term value', () => {
 
 test('tokenize colon filter with colon value', () => {
   const input = `tag::smile:`
-  const result: Token[] = [
+  const result: Tokens = [
     {type: 'ColonFilter', filter: `tag`, value: `:smile:`},
   ]
 
@@ -138,7 +138,7 @@ test('tokenize colon filter with colon value', () => {
 
 test('tokenize colon filter following unmatching exact term', () => {
   const input = `tag:"japan'`
-  const result: Token[] = [
+  const result: Tokens = [
     {type: 'ColonFilter', filter: `tag`, value: ``},
     {type: 'KeywordTerm', value: `japan`},
   ]
@@ -148,7 +148,7 @@ test('tokenize colon filter following unmatching exact term', () => {
 
 test('tokenize colon filter surrounded by whitespace', () => {
   const input = `  tag:javascript  `
-  const result: Token[] = [
+  const result: Tokens = [
     {type: 'ColonFilter', filter: `tag`, value: `javascript`},
   ]
 
@@ -157,7 +157,7 @@ test('tokenize colon filter surrounded by whitespace', () => {
 
 test('tokenize keyword terms delimited by comma delimiters', () => {
   const input = `,tea, maccha`
-  const result: Token[] = [
+  const result: Tokens = [
     {type: 'CommaDelimiter', value: `,`},
     {type: 'KeywordTerm', value: `tea`},
     {type: 'CommaDelimiter', value: `,`},
@@ -169,7 +169,7 @@ test('tokenize keyword terms delimited by comma delimiters', () => {
 
 test('tokenize exact terms delimited by comma delimiters', () => {
   const input = `,"typescript", "javascript"`
-  const result: Token[] = [
+  const result: Tokens = [
     {type: 'CommaDelimiter', value: `,`},
     {type: 'ExactTerm', value: `typescript`},
     {type: 'CommaDelimiter', value: `,`},
@@ -181,7 +181,7 @@ test('tokenize exact terms delimited by comma delimiters', () => {
 
 test('tokenize colon filters delimited by comma delimiters', () => {
   const input = `,tag:japan, tag:drinks,`
-  const result: Token[] = [
+  const result: Tokens = [
     {type: 'CommaDelimiter', value: `,`},
     {type: 'ColonFilter', filter: `tag`, value: `japan`},
     {type: 'CommaDelimiter', value: `,`},
@@ -194,7 +194,7 @@ test('tokenize colon filters delimited by comma delimiters', () => {
 
 test('tokenize sequence of colon filters, exact term, followed by keyword terms delimited by comma delimiters', () => {
   const input = `language:javascript tag:regex, "escape" character, class`
-  const result: Token[] = [
+  const result: Tokens = [
     {type: 'ColonFilter', filter: `language`, value: `javascript`},
     {type: 'ColonFilter', filter: `tag`, value: `regex`},
     {type: 'CommaDelimiter', value: `,`},
